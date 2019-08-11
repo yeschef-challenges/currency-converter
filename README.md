@@ -1,8 +1,8 @@
 # YesChef Currency Converter Challenge
 
-Welcome to YesChef Node.js challenge.
-Solving this challenge will get you one step closer to working with our team on our amazing platform.
-Please read the instructions carefully and follow them as this is part of the challenge.
+Welcome to YesChef Node.js challenge.<br>
+Solving this challenge will get you one step closer to working with our team on our amazing platform.<br>
+Please read the instructions carefully and follow them as this is part of the challenge.<br>
 
 ## Solving Flow
 
@@ -15,7 +15,7 @@ Please read the instructions carefully and follow them as this is part of the ch
 
 ## The Challenge
 
-We need to create a currency converter web service.<br>
+You need to create a currency converter web service.<br>
 The system is half way done and you need to complete it.<br>
 The repository includes a test file (called currency-challenge-test.html)<br>
 We'll run this test on the your solution as well as some more edge cases (not included in the file)<br>
