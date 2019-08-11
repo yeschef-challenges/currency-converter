@@ -16,10 +16,9 @@ Please read the instructions carefully and follow them as this is part of the ch
 ## The Challenge
 
 You need to create a currency converter web service.<br>
-The system is half way done and you need to complete it.<br>
-The repository includes a test file (called currency-challenge-test.html)<br>
-We'll run the test file on your solution as well as some more edge cases (not included in the file)<br>
-Please be proactive.
+The system is **half way** done and you need to complete it.<br>
+The repository includes a test file called **currency-challenge-test.html**<br>
+We'll run the test file on your solution as well as some **more edge cases** (not included in the file)<br>
 
 ## Scoring System
 - A solution that works - **60%**
