@@ -17,6 +17,7 @@ Please read the instructions carefully and follow them as this is part of the ch
 
 You need to create a currency converter web service.<br>
 The system is **half way** done and you need to complete it.<br>
+Please continue the work on [main.js](https://github.com/yeschef-challenges/currency-converter/blob/master/main.js) <br>
 The repository includes a test file called **currency-challenge-test.html**<br>
 We'll run the test file on your solution as well as some **more edge cases** (not included in the file)<br>
 
