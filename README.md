@@ -15,7 +15,7 @@ Please read the instructions carefully and follow them as this is part of the ch
 
 ## The Challenge
 
-We need to create a currency conversion web service
+We need to create a currency converter web service
 The system is half way done and you need to complete it
 The repository includes a test file (called currency-challenge-test.html)
 We'll run this test on the your solution as well as some more edge cases (not included in the file)
