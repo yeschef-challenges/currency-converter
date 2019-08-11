@@ -1,0 +1,220 @@
+<html>
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script type="application/javascript">
+        window.tests = [];
+
+        function prepareTests() {
+            //prepare the results table:
+            const resultLineTemplate = "<div>" + $("#TestResultsTemplate").html().trim() + "</div>";
+
+            addTest($(resultLineTemplate), {
+                name: "Set Nis Rate to 3.7",
+                request: {
+                    url: "http://localhost:8080/rates/",
+                    method: "post",
+                    data: {
+                        currency: "NIS",
+                        rate: 3.7
+                    },
+                },
+                expected: "Ok"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "Set EUR Rate to 0.9",
+                request: {
+                    url: "http://localhost:8080/rates/",
+                    method: "post",
+                    data: {
+                        currency: "EUR",
+                        rate: 0.9
+                    },
+                },
+                expected: "Ok"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "convert 10 EUR to USD",
+                request: {
+                    url: "http://localhost:8080/convert/10/eur/usd",
+                    method: "get"
+                },
+                expected: "11.11"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "convert 10 USD to EUR",
+                request: {
+                    url: "http://localhost:8080/convert/10/usd/eur",
+                    method: "get"
+                },
+                expected: "9.00"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "convert 10 EUR to NIS",
+                request: {
+                    url: "http://localhost:8080/convert/10/eur/nis",
+                    method: "get"
+                },
+                expected: "41.11"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "Set Nis Rate to 3.7",
+                request: {
+                    url: "http://localhost:8080/rates/",
+                    method: "post",
+                    data: {
+                        currency: "NIS",
+                        rate: "3.7"
+                    },
+                },
+                expected: "Ok"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "convert 10 EUR to NIS",
+                request: {
+                    url: "http://localhost:8080/convert/10/eur/nis",
+                    method: "get"
+                },
+                expected: "41.11"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "convert 10 YIY to NIS",
+                request: {
+                    url: "http://localhost:8080/convert/10/yiy/nis",
+                    method: "get"
+                },
+                expected: "Invalid `from` currency"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "convert 10 NIS to BTC",
+                request: {
+                    url: "http://localhost:8080/convert/10/nis/btc",
+                    method: "get"
+                },
+                expected: "Invalid `to` currency"
+            });
+
+            addTest($(resultLineTemplate), {
+                name: "convert aa NIS to USD",
+                request: {
+                    url: "http://localhost:8080/convert/aa/nis/usd",
+                    method: "get"
+                },
+                expected: "Invalid amount"
+            });
+
+        }
+
+        function addTest(testBlockElement, testData) {
+            const testId = window.tests.length;
+            testBlockElement.find(".testNum").text((testId + 1) + ".");
+            testBlockElement.find(".testName").text(testData.name);
+            testBlockElement.find(".Expected").text(testData.expected);
+            testBlockElement.find('i').addClass("test_" + testId);
+            testBlockElement.find('.results').addClass("test_" + testId);
+            window.tests.push(testData);
+            window.testsContainer.append(testBlockElement.html());
+        }
+
+        function init() {
+            window.testsContainer = $("#TestsContainer");
+            prepareTests();
+            runTests(0);
+        }
+
+        function markDone(testNum, results, isSuccess) {
+            const successElement = $("i.test_" + testNum).removeClass("fa-square");
+            if (isSuccess) {
+                successElement.addClass("fa-check-square");
+            } else {
+                successElement.removeClass("far").addClass("fas fa-times");
+            }
+            $(".results.test_" + testNum).text(results);
+            runTests(testNum + 1);
+        }
+
+        function runTests(testNum) {
+            testNum = testNum || 0;
+
+            const currentTest = window.tests[testNum];
+            if (!currentTest) {
+                return;
+            }
+
+            $.ajax(currentTest.request.url, {
+                method: currentTest.request.method,
+                data: currentTest.request.data,
+                complete: function (response) {
+                    if (!currentTest.expected || currentTest.expected === response.responseText) {
+                        markDone(testNum, response.responseText, true);
+                    } else {
+                        markDone(testNum, response.responseText, false);
+                    }
+                }
+            })
+        }
+
+        window.onload = function () {
+            $(init);
+        }
+    </script>
+    <style>
+        .resultWrapper {
+            display: flex;
+            justify-content: space-between;
+            justify-items: center;
+            align-items: center;
+            width: 500px;
+            margin: auto;
+        }
+
+        .testName {
+            padding-right: 10px
+        }
+
+        #TestsContainer {
+            display: grid;
+            grid-template-columns: repeat(5, 20%);
+            grid-gap: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="TestsContainer">
+        <!-- <div class="resultWrapper"> -->
+        <span class="testNum">#</span>
+        <span> Success</span>
+        <span class="testName">Name</span>
+        <span class="Expected">Expected Results</span>
+        <span class="results">Actual Results</span>
+        <!-- </div> -->
+    </div>
+
+    <template id="TestResultsTemplate">
+        <!-- <div class="resultWrapper"> -->
+        <span class="testNum"></span>
+        <i class="far fa-square"></i>
+        <span class="testName"></span>
+        <span class="Expected"></span>
+        <span class="results"></span>
+        <!-- </div> -->
+    </template>
+</body>
+
+</html>
