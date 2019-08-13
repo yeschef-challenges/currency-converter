@@ -70,28 +70,6 @@
             });
 
             addTest($(resultLineTemplate), {
-                name: "Set Nis Rate to 3.7",
-                request: {
-                    url: "http://localhost:8080/rates/",
-                    method: "post",
-                    data: {
-                        currency: "NIS",
-                        rate: "3.7"
-                    },
-                },
-                expected: "Ok"
-            });
-
-            addTest($(resultLineTemplate), {
-                name: "convert 10 EUR to NIS",
-                request: {
-                    url: "http://localhost:8080/convert/10/eur/nis",
-                    method: "get"
-                },
-                expected: "41.11"
-            });
-
-            addTest($(resultLineTemplate), {
                 name: "convert 10 YIY to NIS",
                 request: {
                     url: "http://localhost:8080/convert/10/yiy/nis",
