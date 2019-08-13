@@ -99,25 +99,6 @@
                 },
                 expected: "Invalid `from` currency"
             });
-
-            addTest($(resultLineTemplate), {
-                name: "convert 10 NIS to BTC",
-                request: {
-                    url: "http://localhost:8080/convert/10/nis/btc",
-                    method: "get"
-                },
-                expected: "Invalid `to` currency"
-            });
-
-            addTest($(resultLineTemplate), {
-                name: "convert aa NIS to USD",
-                request: {
-                    url: "http://localhost:8080/convert/aa/nis/usd",
-                    method: "get"
-                },
-                expected: "Invalid amount"
-            });
-
         }
 
         function addTest(testBlockElement, testData) {
