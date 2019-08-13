@@ -26,4 +26,6 @@ We'll run the test file on your solution as well as some **more edge cases** (no
 - Clean code (readable and reuseable) - **20%**
 - Proactive (Is something missing in the requirements?) - **20%**
 
+Task should take around **30 min**
+
 # Good Luck!
