@@ -6,12 +6,9 @@ Please read the instructions carefully and follow them as this is part of the ch
 
 ## Solving Flow
 
-1. Clone the repository
-2. Create a new branch (entitled "your name")
-3. Solve the challenge
-4. Commit and push
-5. Create a pull request
-
+1. Fork the repository
+2. Solve the challenge
+3. Create a pull request
 
 ## The Challenge
 
