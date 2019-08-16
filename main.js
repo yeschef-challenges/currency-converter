@@ -4,15 +4,35 @@ const rates = {
     usd: 1
 };
 
+function Exception(message) {
+    this.message = message;
+}
+
 function setRates(urlParts, dataObj) {
-    //todo: store/update a rate
+    const currency = dataObj.currency.toLowerCase()
+    rates[currency] = parseFloat(dataObj.rate)
 }
 
 function convert(requestParams) {
-    //todo: convert between two currencies
+    const amount = parseFloat(requestParams[2])
+    const fromCurrency = requestParams[3]
+    const toCurrency = requestParams[4]
+    if (isNaN(amount)) {
+        throw new Exception('Invalid amount')
+    } else if (!rates[fromCurrency]) {
+        throw new Exception('Invalid `from` currency')
+    } else  if (!rates[toCurrency]) {
+        throw new Exception('Invalid `to` currency')
+    } else {
+        return String(Number(amount / rates[fromCurrency] * rates[toCurrency]).toFixed(2))
+    }
 }
 
 http.createServer((req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Request-Method', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+    res.setHeader('Access-Control-Allow-Headers', '*');
     const urlParts = req.url.split("/");
     if (req.method === "GET") {
         switch (urlParts[1]) {
@@ -20,12 +40,12 @@ http.createServer((req, res) => {
                 try {
                     res.end(convert(urlParts));
                 } catch (e) {
-                    res.statusCode = 401;
+                    res.statusCode = 400;
                     res.end(e.message);
                 }
                 break;
             default:
-                res.statusCode = 401;
+                res.statusCode = 400;
                 res.end("bad request");
         }
     } else if (req.method === "POST") {
