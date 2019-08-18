@@ -5,14 +5,26 @@ const rates = {
 };
 
 function setRates(urlParts, dataObj) {
-    //todo: store/update a rate
+    rates[dataObj.currency.toLowerCase()] = +dataObj.rate;
 }
 
 function convert(requestParams) {
     //todo: convert between two currencies
+    const amount = +requestParams[2];
+    const from = requestParams[3];
+    const to = requestParams[4];
+
+    console.log(amount, rates[from], rates[to]);
+
+    return rates[from] ? (amount / rates[from] * rates[to]).toFixed(2) : 'Invalid `from` currency';
 }
 
 http.createServer((req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Request-Method', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+
     const urlParts = req.url.split("/");
     if (req.method === "GET") {
         switch (urlParts[1]) {
