@@ -5,11 +5,32 @@ const rates = {
 };
 
 function setRates(urlParts, dataObj) {
-    //todo: store/update a rate
+    try {
+        const currencyName = dataObj.currency.toLowerCase();
+        if (!rates.hasOwnProperty(`${currencyName}`)) {
+            rates[currencyName] = +dataObj.rate;
+        }
+    } catch (err) {
+        throw new Error(err);
+    }
 }
 
 function convert(requestParams) {
-    //todo: convert between two currencies
+    try {
+        const curToConvertRate = rates[requestParams[4]];
+        const convertedCurRate = rates[requestParams[3]];
+        if (isNaN(curToConvertRate)) {
+            return "Invalid `to` currency"
+        } else if (isNaN(convertedCurRate)) {
+            return "Invalid `from` currency"
+        } else {
+            const value = requestParams[2];
+            const converted = (value*curToConvertRate) / (value*convertedCurRate);
+            return (converted * 10).toFixed(2);
+        }
+    } catch (err) {
+        throw new Error(err);
+    }
 }
 
 http.createServer((req, res) => {
