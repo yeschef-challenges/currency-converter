@@ -1,4 +1,9 @@
+const express = require('express')
+const cors = require('cors')
+const app = express()
 const http = require('http');
+
+app.use(cors());
 
 const rates = {
     usd: 1
@@ -6,13 +11,39 @@ const rates = {
 
 function setRates(urlParts, dataObj) {
     //todo: store/update a rate
+    const { currency, rate } = dataObj; 
+    if (isNaN(rate)) {
+        throw new Error('rate is not a valid number');
+    }
+    rates[currency.toLowerCase()] = parseFloat(rate);
+    return 'Ok';
 }
 
 function convert(requestParams) {
     //todo: convert between two currencies
+    if ( requestParams.length !== 5 ) {
+        throw new Error('invalid parameters');
+    }
+    const srcAmount = requestParams[2];
+    const srcCurrency = requestParams[3];
+    const dstCurrency = requestParams[4];
+    
+    // param validation
+    if (isNaN(srcAmount)) {
+        throw new Error('amount is not valid number');
+    }
+    if (!srcCurrency || !rates[srcCurrency.toLowerCase()]) {
+        throw new Error('Invalid `from` currency');
+    }
+    if (!dstCurrency || !rates[dstCurrency.toLowerCase()]) {
+        throw new Error('Invalid `to` currency');
+    }
+
+    const dstAmount = (srcAmount * rates[dstCurrency.toLowerCase()] / rates[srcCurrency.toLowerCase()]).toFixed(2);
+    return dstAmount;
 }
 
-http.createServer((req, res) => {
+app.use('/', (req, res) => {
     const urlParts = req.url.split("/");
     if (req.method === "GET") {
         switch (urlParts[1]) {
@@ -62,6 +93,10 @@ http.createServer((req, res) => {
         res.end("bad request");
     }
     console.log(req.url);
-}).listen(8080);
+});
+
+const server = http.createServer(app);
+server.listen(8080);
 
 console.log("server is up and running on port 8080")
+
