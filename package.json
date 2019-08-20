@@ -1,0 +1,24 @@
+{
+  "name": "currency-converter",
+  "version": "1.0.0",
+  "description": "Welcome to YesChef Node.js challenge.<br> Solving this challenge will get you one step closer to working with our team on our amazing platform.<br> Please read the instructions carefully and follow them as this is part of the challenge.<br>",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techqulxpert/currency-converter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/techqulxpert/currency-converter/issues"
+  },
+  "homepage": "https://github.com/techqulxpert/currency-converter#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
