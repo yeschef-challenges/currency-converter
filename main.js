@@ -5,14 +5,36 @@ const rates = {
 };
 
 function setRates(urlParts, dataObj) {
-    //todo: store/update a rate
+  const { currency, rate } = dataObj;
+  rates[currency.toLowerCase()] = rate;
 }
 
-function convert(requestParams) {
-    //todo: convert between two currencies
+function validateCurrency(obj) {
+  Object.keys(obj).forEach((key) => {
+    if(!obj[key]){
+      throw new Error(`Invalid \`${key}\` currency`);
+    }
+  });
 }
+
+function convert([,, amount, fromCur, toCur ]) {
+  const operationRates = {
+    from: rates[fromCur],
+    to: rates[toCur]
+  };
+  validateCurrency(operationRates);
+  return String((amount * operationRates.to / operationRates.from).toFixed(2));
+}
+
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+}
+
 
 http.createServer((req, res) => {
+    setCORS(res);
     const urlParts = req.url.split("/");
     if (req.method === "GET") {
         switch (urlParts[1]) {
@@ -62,6 +84,6 @@ http.createServer((req, res) => {
         res.end("bad request");
     }
     console.log(req.url);
-}).listen(8080);
-
-console.log("server is up and running on port 8080")
+}).listen(8080, () => {
+  console.log("server is up and running on port 8080");
+});
