@@ -6,7 +6,11 @@ const rates = {
 
 function setRates(urlParts, dataObj) {
   const { currency, rate } = dataObj;
-  rates[currency.toLowerCase()] = rate;
+  const castRate = +rate;
+  if(Number.isNaN(castRate)){
+    throw new Error(`Invalid rate of currency \`${currency}\``);
+  }
+  rates[currency.toLowerCase()] = castRate;
 }
 
 function validateCurrency(obj) {
